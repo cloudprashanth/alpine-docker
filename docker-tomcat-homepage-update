@@ -10,3 +10,4 @@ RUN rm index.jsp
 RUN echo "<htmml><head>Hii</head></html>" > index.html
 EXPOSE 8080
 CMD ["/opt/tomcat/bin/catalina.sh", "run"]
+
