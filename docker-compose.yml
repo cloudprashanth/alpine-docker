@@ -1,0 +1,6 @@
+version: '3'
+services:
+  tomcat:
+    image: "802750893411.dkr.ecr.us-east-2.amazonaws.com/itzprashanth:latest"
+    ports:
+     - "8080:8080"
