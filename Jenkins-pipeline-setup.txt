@@ -1,0 +1,125 @@
+Setup project 2 :
+
+Technology 
+
+1. Setup java and maven home on machine. 
+2. Jenkins - Install and configure jenkins, reset the admin password.
+3. Install git in mahcine
+4. Install docker on machine
+4. Sonar-dashboard
+5. jforge artificatory
+
+
+## Step 1. Install java on machine 
+
+ sudo apt install -y python-software-properties           -- Installting PPA, because we are installing java from PPA repository.
+ sudo add-apt-repository ppa:webupd8team/java             -- adding java repository
+ sudo apt update
+ sudo apt install -y oracle-java8-installer               -- Command to install java 
+ 
+## Verified java version
+
+ubuntu@ip-172-31-10-173:~$ java -version
+java version "1.8.0_171"
+Java(TM) SE Runtime Environment (build 1.8.0_171-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.171-b11, mixed mode)
+
+## Step 2. Downlaod and configure Maven 
+
+ cd /usr/local/src
+ sudo wget http://mirrors.estointernet.in/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+ 
+ sudo tar -xf apache-maven-3.6.3-bin.tar.gz
+ sudo rm -rf apache-maven-3.6.3-bin.tar.gz
+ mv apache-maven-3.6.3/ apache-maven/
+ 
+ ## Configure Apache-Maven Environment
+ 
+ Go to the '/etc/profile.d' directory and create a new configuration file 'maven.sh'.
+ 
+ cd /etc/profile.d/
+ vim maven.sh
+
+ # Apache Maven Environment Variables
+ # MAVEN_HOME for Maven 1 - M2_HOME for Maven 2
+ export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+ export M2_HOME=/usr/local/src/apache-maven
+ export MAVEN_HOME=/usr/local/src/apache-maven
+ export PATH=${M2_HOME}/bin:${PATH}
+ 
+ ## Save the file and make it executable.
+ 
+ chmod +x maven.sh
+ source maven.sh
+ 
+ ## Verify the maven version
+ 
+  mvn --version
+
+  
+ Step 3.  Installting Jenkins ###
+  
+  Add the repository key to the system. 
+  
+
+  wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -                             -- Add jenkins repository
+  
+  echo deb https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list          -- Adding the jenkins repo to repo source.list file
+  
+  sudo apt-get update  -- Update the system 
+  
+  sudo apt-get install jenkins -y  -- Now install jenkns 
+  
+  ## Now start jenkins ## 
+  
+  /etc/init.d/jenkins start |status 
+  OR 
+  service jenkins start | stop | status
+  
+  sudo usermod -aG docker jenkins --> Adding user to docker group & need to restart the service
+  
+  ## Now access jenkins through IP and Port in browser. 
+  
+  http://ec2-52-221-235-166.ap-southeast-1.compute.amazonaws.com:8080/ 
+  
+  Now put the admin password , 
+  
+  cat /var/lib/jenkins/secrets/initialAdminPassword -- > copy the password and paste it on jenkins for first time. 
+  
+  ## Now install the suggested plug-in -- > Save and Finish 
+  
+  ## Now Create first admin user
+  
+ Step 4. Install Git on machine .
+  
+  apt install git
+  
+ ### Install docker on machine ###
+  
+   apt install docker.io
+ 
+##  Run docker container for jforg ##
+ 
+ root@ip-172-31-10-173:~# docker run --name artifactory -d -p 8081:8081 docker.bintray.io/jfrog/artifactory-pro:latest
+ 
+ Allow port 8081 in your SG of Ec2 mahicne. 
+ 
+ # Accss your instace on browser with port 8081, Register for free trial. 
+ # Copy  your key for fre trail and paste it to register.
+ # add password for jforg repository. 
+ 
+ user: admin
+ passwd: admin@123
+  
+ ### Install sonarqube ###
+ 
+ docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube                                              -- This command will run sonarqube in docker container
+ 
+ 
+ ### Configure Deployment steps ####
+ 
+
+  
+  
+
+ 
